@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="shu-course-selection@dianzhou.tpddns.cn" uuid="92971bdc-c849-4eae-aab6-0221e09ea7de">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://dianzhou.tpddns.cn:25432/shu-course-selection</jdbc-url>
+    </data-source>
+  </component>
+</project>
