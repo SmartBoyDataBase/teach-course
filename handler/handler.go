@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"sbdb-teach-course/infrastructure"
+	"strconv"
 )
 
 func getHandler(w http.ResponseWriter, r *http.Request) {
@@ -18,7 +19,7 @@ func getHandler(w http.ResponseWriter, r *http.Request) {
 		SemesterId string `json:"semester_id"`
 		CourseId   string `json:"course_id"`
 	}
-	result.Id = id
+	result.Id, _ = strconv.ParseUint(id, 10, 64)
 	row.Scan(&result.CourseId, &result.TeacherId, &result.SemesterId)
 	body, _ := json.Marshal(result)
 	w.Write(body)
