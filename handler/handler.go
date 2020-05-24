@@ -32,9 +32,20 @@ func postHandler(w http.ResponseWriter, r *http.Request) {
 	teacherId := r.URL.Query().Get("teacher_id")
 	semesterId := r.URL.Query().Get("semester_id")
 	courseId := r.URL.Query().Get("course_id")
-	_, _ = infrastructure.DB.Exec(`
+	_, err := infrastructure.DB.Exec(`
 	INSERT INTO teachcourse(course_id, teacher_id, semester_id) VALUES ($1,$2,$3);
 	`, courseId, teacherId, semesterId)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+	} else {
+		result := struct {
+			TeacherId  string `json:"teacher_id"`
+			SemesterId string `json:"semester_id"`
+			CourseId   string `json:"course_id"`
+		}{TeacherId: teacherId, SemesterId: semesterId, CourseId: courseId}
+		body, _ := json.Marshal(result)
+		_, _ = w.Write(body)
+	}
 }
 
 func Handler(w http.ResponseWriter, r *http.Request) {
