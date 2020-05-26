@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"database/sql"
 	"encoding/json"
 	"net/http"
 	"sbdb-teach-course/infrastructure"
@@ -59,10 +60,19 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func AllHandler(w http.ResponseWriter, r *http.Request) {
-	rows, _ := infrastructure.DB.Query(`
-	SELECT id, course_id, teacher_id, semester_id
-	FROM teachcourse;
-	`)
+	var rows *sql.Rows
+	if r.URL.Query().Get("teacher_id") == "" {
+		rows, _ = infrastructure.DB.Query(`
+			SELECT id, course_id, teacher_id, semester_id
+			FROM teachcourse;
+		`)
+	} else {
+		rows, _ = infrastructure.DB.Query(`
+			SELECT id, course_id, teacher_id, semester_id
+			FROM teachcourse
+			WHERE teacher_id=$1;
+		`, r.URL.Query().Get("teacher_id"))
+	}
 	var result []struct {
 		Id         uint64 `json:"id"`
 		CourseId   uint64 `json:"course_id"`
