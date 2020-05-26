@@ -92,6 +92,11 @@ func AllHandler(w http.ResponseWriter, r *http.Request) {
 			SemesterId uint64 `json:"semester_id"`
 		}{Id: id, CourseId: courseId, TeacherId: teacherId, SemesterId: semesterId})
 	}
-	body, _ := json.Marshal(result)
+	var body []byte
+	if len(result) != 0 {
+		body, _ = json.Marshal(result)
+	} else {
+		body = []byte("[]")
+	}
 	w.Write(body)
 }
