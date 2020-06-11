@@ -44,7 +44,7 @@ func postHandler(w http.ResponseWriter, r *http.Request) {
 			TeacherId  string `json:"teacher_id"`
 			SemesterId string `json:"semester_id"`
 			CourseId   string `json:"course_id"`
-		}{TeacherId: teacherId, SemesterId: semesterId, CourseId: courseId}
+		}{Id: id, TeacherId: teacherId, SemesterId: semesterId, CourseId: courseId}
 		body, _ := json.Marshal(result)
 		_, _ = w.Write(body)
 	}
