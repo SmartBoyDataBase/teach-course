@@ -26,6 +26,20 @@ func getHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write(body)
 }
 
+func deleteHandler(w http.ResponseWriter, r *http.Request) {
+	id := r.URL.Query().Get("id")
+	_, err := infrastructure.DB.Exec(`
+	DELETE FROM teachcourse
+	WHERE id=$1;
+	`, id)
+	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		w.Write([]byte(err.Error()))
+	} else {
+		w.WriteHeader(http.StatusOK)
+	}
+}
+
 func postHandler(w http.ResponseWriter, r *http.Request) {
 	teacherId := r.URL.Query().Get("teacher_id")
 	semesterId := r.URL.Query().Get("semester_id")
@@ -56,6 +70,8 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		getHandler(w, r)
 	case "POST":
 		postHandler(w, r)
+	case "DELETE":
+		deleteHandler(w, r)
 	}
 }
 
